@@ -60,7 +60,7 @@ generate_input_file(){
 
 	if [ "$benchmark" = "dedisbench1" ] 
 	then
-		input_file="../../inputs/dedisbench1/$file_name"
+		input_file="./inputs/dedisbench1/$file_name"
 		touch $input_file
 		echo "[execution]" > $input_file
 		echo "distfile=conf/$dataset" >> $input_file
@@ -94,7 +94,7 @@ generate_input_file(){
 
 	elif [ "$benchmark" = "dedisbench2" ]
 	then
-		input_file="../../inputs/dedisbench2/$file_name"
+		input_file="./inputs/dedisbench2/$file_name"
 		touch $input_file
 		echo "[execution]" > $input_file
 		echo "distfile=conf/$dataset" >> $input_file
@@ -146,8 +146,8 @@ generate_input_file(){
 }
 
 main(){
-	mkdir -p ../../inputs/dedisbench1
-	mkdir -p ../../inputs/dedisbench2
+	mkdir -p ./inputs/dedisbench1
+	mkdir -p ./inputs/dedisbench2
 	generate_all_input_files
 }
 

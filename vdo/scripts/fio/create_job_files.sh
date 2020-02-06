@@ -72,7 +72,7 @@ generate_input_file(){
 main(){
     
     # Voltar a criar a pasta e ficheiro
-    mkdir -p ../../inputs/fio/
+    mkdir -p ./inputs/fio/
 
     for dataset in dataset1 dataset2
     do
@@ -84,7 +84,7 @@ main(){
                 do
                     # Nome do ficheiro (baseado no dataset, tipo de acesso, teste e nr processos)
                     file_name="$dataset"_"$access_type"_"$process_number"_"$test_type.ini"
-                    input_file="../../inputs/fio/$file_name"
+                    input_file="./inputs/fio/$file_name"
                     touch $input_file
                     # Popular ficheiro
                     generate_input_file
