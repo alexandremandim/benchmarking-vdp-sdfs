@@ -13,7 +13,6 @@ vdostats_file_name=""
 dstat_pid=""
 iostat_pid=""
 vdo_stats_pid=""
-infinitevdo_stats_file_name=""
 vdo_volume_name="volume-name"
 input_file=""
 benchmark=""
@@ -25,7 +24,6 @@ run_number=""
 run_ID=""
 filesize="60000" #em MB
 blocksize="4096" #em bytes
-log_files_list=""
 
 initial_state()
 {
@@ -37,7 +35,7 @@ initial_state()
 	sudo blkdiscard /dev/sda6 
 
 	echo "initial_state: create volume $vdo_volume_name" >> $log_run
-	./scripts/create-volume.sh $vdo_volume_name >> $log_run
+	./scripts/vdo/create-volume.sh $vdo_volume_name >> $log_run
 }
 
 start_monitoring()
@@ -49,7 +47,6 @@ start_monitoring()
 	if [ "$dstat" = true ]
 	then
 		dstat_file_name="./logs/dstat/dstat_$run_ID.csv"
-		log_files_list=$log_files_list" ./dstat/dstat_"$run_ID".csv"
 		dstat -cm --output $dstat_file_name > /dev/null 2>&1 &
 		dstat_pid=$!
 		echo "start_monitoring: Started dstat with pid $dstat_pid" >> $log_run 
@@ -58,7 +55,6 @@ start_monitoring()
 	if [ "$iostat" = true ] 
 	then
 		iostat_file_name="./logs/iostat/iostat_$run_ID.txt"
-		log_files_list=$log_files_list" ./iostat/iostat_"$run_ID".txt"
 		iostat -d 2 > $iostat_file_name 2>>$log_run &
 		iostat_pid=$!
 		echo "start_monitoring: Started iostat with pid $iostat_pid" >> $log_run 
@@ -70,7 +66,6 @@ benchmark()
 	# Guardar estado inicial do volume VDO
 	# VDO Stats Inicial
 	vdostats --verbose >> "./logs/vdo_stats/"$run_ID"_vdo_stats_1"
-	log_files_list=$log_files_list" ./vdo_stats/"$run_ID"_vdo_stats_1"
 
 	# Sistema de benchmarking
 	if [ "$benchmark" = "fio" ]
@@ -86,7 +81,6 @@ benchmark()
 	# Guardar estado final do volume VDO
 	# VDO Stats Final
 	vdostats --verbose >> "./logs/vdo_stats/"$run_ID"_vdo_stats_2"
-	log_files_list=$log_files_list" ./vdo_stats/"$run_ID"_vdo_stats_2"
 }
 
 stop_monitoring()
@@ -111,7 +105,7 @@ stop_monitoring()
 close_the_door()
 {
 	echo "close_the_door: removing volume" >> $log_run
-	./scripts/remove-volume.sh $vdo_volume_name >> $log_run
+	./scripts/vdo/remove-volume.sh $vdo_volume_name >> $log_run
 	echo "Sleeping 5 minutes and sending logs" >> $log_run
 	sleep 300
 }
@@ -143,7 +137,6 @@ run_all_tests()
 				done
 			done
 		done
-		send_logs
 	done
 	echo "main: End of the tests"	
 }
@@ -158,7 +151,6 @@ single_run()
 
 	# Variavel para onde vai ser rederecionado todos os logs sobre a RUN
 	log_run="./logs/runs/log_$run_ID.txt"
-	log_files_list=$log_files_list" ./runs/log_$run_ID.txt"
 	echo "RUN: $run_ID"
 	
 	initial_state
