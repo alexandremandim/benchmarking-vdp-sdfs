@@ -146,8 +146,8 @@ generate_input_file(){
 }
 
 main(){
-	mkdir -p ./inputs/dedisbench1
-	mkdir -p ./inputs/dedisbench2
+	mkdir -p ./inputs/dedisbench1/
+	mkdir -p ./inputs/dedisbench2/
 	generate_all_input_files
 }
 
