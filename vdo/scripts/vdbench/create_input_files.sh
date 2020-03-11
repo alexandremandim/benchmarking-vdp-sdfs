@@ -69,6 +69,10 @@ wd()
     then
         echo "seekpct=random" >> $input_file
     fi
+    elif [ "$access_type" = "poisson" ]
+    then
+        echo "seekpct=(poisson,3)" >> $input_file
+    fi
 }
 
 rd()
@@ -99,7 +103,7 @@ main(){
     do
         for test_type in r w
         do
-            for access_type in sequencial uniform
+            for access_type in sequencial uniform poisson
             do
                 for process_number in 1 4
                 do
