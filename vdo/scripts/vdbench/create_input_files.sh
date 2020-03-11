@@ -14,13 +14,13 @@ general()
         echo "dedupratio=2.9" >> $input_file 
         echo "dedupunit=4k" >> $input_file 
         echo "dedupsets=17%" >> $input_file 
-        echo "compratio=6" >> $input_file 
+        echo "compratio=1.0638" >> $input_file # 6%
     elif [ "$dataset" = "dataset2" ]
     then
         echo "dedupratio=1.64" >> $input_file 
         echo "dedupunit=4k" >> $input_file 
         echo "dedupsets=17%" >> $input_file 
-        echo "compratio=74"   >> $input_file 
+        echo "compratio=3.846"   >> $input_file # 74%
     fi   
 }
 
