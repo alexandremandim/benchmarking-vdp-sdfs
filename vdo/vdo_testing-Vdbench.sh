@@ -171,7 +171,7 @@ main()
 	mkdir -p ./logs/iostat/
 	mkdir -p ./logs/vdo_stats/
 	mkdir -p ./logs/runs/
-	cd ./logs/
+
 	run_all_tests
 	send_logs
 }
