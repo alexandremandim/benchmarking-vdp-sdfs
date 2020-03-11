@@ -69,7 +69,6 @@ wd()
     elif [ "$access_type" = "uniform" ]
     then
         echo "seekpct=random" >> $input_file
-    fi
     elif [ "$access_type" = "poisson" ]
     then
         echo "seekpct=(poisson,3)" >> $input_file
