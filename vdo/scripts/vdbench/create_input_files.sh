@@ -47,8 +47,6 @@ wd()
     echo "wd=wd1" >> $input_file
     echo "sd=sd1" >> $input_file
     echo "xfersize=4k" >> $input_file
-    echo "iorate=max" >> $input_file
-    echo "priority=1" >> $input_file
 
     # Tipo de teste (Read ou write)
     if [ "$test_type" = "w" ]
@@ -80,6 +78,7 @@ rd()
     echo "#RD" >> $input_file
     echo "rd=rd1" >> $input_file
     echo "wd=wd1" >> $input_file
+    echo "iorate=max" >> $input_file
     let timeSec=$runTime*60
     echo "elapsed=${timeSec}" >> $input_file
     echo "maxdata=${size}g" >> $input_file
