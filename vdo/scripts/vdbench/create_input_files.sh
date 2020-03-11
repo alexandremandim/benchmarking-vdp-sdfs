@@ -3,7 +3,7 @@
 
 vdoVolumeName="/dev/mapper/volume-name"
 runTime=20 # in minutes
-size=100
+size=60
 
 general()
 {
@@ -29,7 +29,7 @@ sd()
     echo "#SD" >> $input_file
     echo "sd=sd1" >> $input_file 
     echo "lun=${vdoVolumeName}" >> $input_file
-    echo "size=${size}m" >> $input_file
+    echo "size=${size}g" >> $input_file
     echo "openflags=o_direct" >> $input_file
 
     if [ "$process_number" = "4"  ]
@@ -80,7 +80,7 @@ rd()
     echo "iorate=max" >> $input_file
     let timeSec=$runTime*60
     echo "elapsed=${timeSec}" >> $input_file
-    echo "maxdata=${size}m" >> $input_file
+    echo "maxdata=${size}g" >> $input_file
 }
 
 # Ordem : General, (HD, RG), SD, WD, RD

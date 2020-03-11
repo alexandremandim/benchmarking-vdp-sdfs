@@ -69,7 +69,7 @@ benchmark()
 	then
 		echo "benchmark: starting vdbench" >> $log_run
 		input_file="./inputs/vdbench/${dataset}"_"${access_type}"_"${process_number}"_"${test_type}.ini"
-		~/vdbench/vdbench -f $input_file -o "./logs/vdbench/${dataset}"_"${access_type}"_"${process_number}"_"${test_type}/"
+		~/vdbench/vdbench -f $input_file -o "./logs/vdbench/${run_ID}/"
 	else
 		echo "benchmark: no benchmark started" >> $log_run
 	fi
