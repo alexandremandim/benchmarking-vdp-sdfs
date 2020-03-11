@@ -2,9 +2,8 @@
 # Script para criar os job files para o FIO
 
 vdoVolumeName="/dev/mapper/volume-name"
-runTime=20
+runTime=20 # in minutes
 size=60
-blockSize=4k
 
 general()
 {
@@ -12,20 +11,16 @@ general()
 
     if [ "$dataset" = "dataset1" ] 
     then
+        echo "dedupratio=2.9" >> $input_file 
+        echo "dedupunit=4k" >> $input_file 
+        echo "dedupsets=17%" >> $input_file 
         echo "compratio=6" >> $input_file 
-        echo "dedupratio=" >> $input_file 
-        echo "dedupunit=" >> $input_file 
-        echo "dedupsets=" >> $input_file 
-        echo "deduphotsets=" >> $input_file 
-        echo "dedupflipflop=" >> $input_file 
     elif [ "$dataset" = "dataset2" ]
     then
+        echo "dedupratio=1.64" >> $input_file 
+        echo "dedupunit=4k" >> $input_file 
+        echo "dedupsets=17%" >> $input_file 
         echo "compratio=74"   >> $input_file 
-        echo "dedupratio=" >> $input_file 
-        echo "dedupunit=" >> $input_file 
-        echo "dedupsets=" >> $input_file 
-        echo "deduphotsets=" >> $input_file 
-        echo "dedupflipflop=" >> $input_file 
     fi   
 }
 
@@ -34,14 +29,13 @@ sd()
     echo "#SD" >> $input_file
     echo "sd=sd1" >> $input_file 
     echo "lun=${vdoVolumeName}" >> $input_file
-    echo "size=${size}" >> $input_file
+    echo "size=${size}g" >> $input_file
     echo "openflags=o_direct" >> $input_file
 
     if [ "$process_number" = "4"  ]
     then
         let size4=size/$process_number
         echo "threads=4" >> $input_file
-        echo "" >> $input_file
     else
         echo "threads=1" >> $input_file
     fi
@@ -52,11 +46,8 @@ wd()
     echo "#WD" >> $input_file
     echo "wd=wd1" >> $input_file
     echo "sd=sd1" >> $input_file
-    # Paralelismo
-    if [ "$process_number" = "4"  ]
-    then
-        echo "streams=4" >> $input_file
-    fi
+    echo "xfersize=4k" >> $input_file
+
     # Tipo de teste (Read ou write)
     if [ "$test_type" = "w" ]
     then
@@ -69,6 +60,10 @@ wd()
     if [ "$access_type" = "sequencial" ]
     then
         echo "seekpct=sequential" >> $input_file
+        if [ "$process_number" = "4"  ]
+        then
+            echo "streams=4" >> $input_file
+        fi
     elif [ "$access_type" = "uniform" ]
     then
         echo "seekpct=random" >> $input_file
