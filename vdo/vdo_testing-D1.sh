@@ -105,7 +105,7 @@ close_the_door()
 {
 	echo "close_the_door: removing volume" >> $log_run
 	./scripts/vdo/remove-volume.sh $vdo_volume_name >> $log_run
-	echo "Sleeping 5 minutes and sending logs" >> $log_run
+	echo "Sleeping 5 minutes" >> $log_run
 	sleep 300
 }
 

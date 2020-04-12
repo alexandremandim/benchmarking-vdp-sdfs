@@ -63,7 +63,7 @@ generate_input_file(){
 		input_file="./inputs/dedisbench1/$file_name"
 		touch $input_file
 		echo "[execution]" > $input_file
-		echo "distfile=conf/$dataset" >> $input_file
+		echo "distfile=datasets/dedis1/$dataset" >> $input_file
 		if [ "$access_type" = "sequencial" ] 
 		then
 			echo "access_type=0" >> $input_file
@@ -97,7 +97,7 @@ generate_input_file(){
 		input_file="./inputs/dedisbench2/$file_name"
 		touch $input_file
 		echo "[execution]" > $input_file
-		echo "distfile=conf/$dataset" >> $input_file
+		echo "distfile=datasets/dedis2/$dataset" >> $input_file
 		if [ "$access_type" = "sequencial" ] 
 		then
 			echo "access_type=0" >> $input_file
