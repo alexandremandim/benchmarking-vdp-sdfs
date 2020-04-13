@@ -72,7 +72,7 @@ benchmark()
 	then
 		echo "benchmark: starting dedisbench1" >> $log_run
 		input_file="./inputs/dedisbench1/$dataset"_"$access_type"_"$process_number"_"$test_type"
-		~/dedisbench/DEDISbench -$test_type -p -t20 -f$input_file >> "./logs/dedisbench1/$run_ID"
+		~/dedisbench/DEDISbench -$test_type -p -s60000 -t20 -f$input_file >> "./logs/dedisbench1/$run_ID"
 	else
 		echo "benchmark: no benchmark started" >> $log_run
 	fi
