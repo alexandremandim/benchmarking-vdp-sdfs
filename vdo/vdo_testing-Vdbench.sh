@@ -113,7 +113,7 @@ send_logs()
 
 run_all_tests()
 {
-	echo "main: Starting FIO tests"
+	echo "main: Starting vdbench tests"
 	
 	for benchmark in vdbench
 	do
