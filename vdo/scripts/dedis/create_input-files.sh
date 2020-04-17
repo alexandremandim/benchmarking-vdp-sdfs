@@ -77,7 +77,7 @@ generate_input_file(){
 		COUNT=`expr $filesize / $process_number`
 		echo "filesize=$COUNT" >> $input_file
 		echo "blocksize=$blocksize" >> $input_file
-		if [ "$test_type" = "w" -a "$access_type" = "sequencial" ]
+		if [ "$test_type" = "w" ]
 		then
 			echo "populate=0" >> $input_file
 		else
@@ -112,7 +112,7 @@ generate_input_file(){
 		COUNT=`expr $filesize / $process_number`
 		echo "filesize=$COUNT" >> $input_file
 		echo "blocksize=$blocksize" >> $input_file
-		if [ "$test_type" = "w" -a "$access_type" = "sequencial" ]
+		if [ "$test_type" = "w" ]
 		then
 			echo "populate=0" >> $input_file
 		else
