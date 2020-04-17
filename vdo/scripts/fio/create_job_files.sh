@@ -69,6 +69,32 @@ generate_input_file(){
     echo "; -- end job file --" >> $input_file
 }
 
+generate_populate_job(){
+    echo "; -- start populate job file --" > $input_file
+    echo "[global]" >> $input_file
+
+    echo "filename=${vdoVolumeName}" >> $input_file   # Especifica o caminho
+    echo "direct=1" >> $input_file #O_DIRECT
+    echo "ioengine=${ioEngine}" >> $input_file
+    echo "blocksize=${blockSize}" >> $input_file
+    echo "iodepth=1" >> $input_file
+    echo "size=${size}g" >> $input_file
+    echo "readwrite=write" >> $input_file
+
+    # Benchmark (valores de compressao e dedup)
+    if [ "$dataset" = "dataset1" ] 
+    then
+        echo "buffer_compress_percentage=6" >> $input_file
+        echo "dedupe_percentage=34" >> $input_file 
+    elif [ "$dataset" = "dataset2" ]
+    then
+        echo "buffer_compress_percentage=74" >> $input_file
+        echo "dedupe_percentage=61" >> $input_file 
+    fi
+    echo "[proc]" >> $input_file
+    echo "; -- end job file --" >> $input_file
+}
+
 main(){
     
     # Voltar a criar a pasta e ficheiro
@@ -76,6 +102,8 @@ main(){
 
     for dataset in dataset1 dataset2
     do
+        input_file="./inputs/fio/populate_${dataset}"
+        generate_populate_job
         for test_type in r w
         do
             for access_type in sequencial uniform zipf

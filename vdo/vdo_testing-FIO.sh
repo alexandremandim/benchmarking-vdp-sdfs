@@ -70,6 +70,14 @@ benchmark()
 	# Sistema de benchmarking
 	if [ "$benchmark" = "fio" ]
 	then
+		# Populate se for leitura
+		if [ $test_type = 'r' ]
+		then
+			echo "populating with fio" >> $log_run
+			input_file="./inputs/fio/populate_${dataset}"
+			fio $input_file >> "./logs/fio-populate//$run_ID"
+		fi
+		
 		echo "benchmark: starting fio" >> $log_run
 		input_file="./inputs/fio/${dataset}"_"${access_type}"_"${process_number}"_"${test_type}.ini"
 		fio $input_file >> "./logs/fio/$run_ID"
@@ -123,7 +131,7 @@ run_all_tests()
 	do
 		for dataset in dataset1 dataset2
 		do
-			for test_type in r w
+			for test_type in r
 			do
 				for access_type in sequencial uniform zipf
 				do
@@ -155,6 +163,7 @@ single_run()
 	
 	initial_state
 
+	# Monitorização
 	if [ $run_number = 4 ]
 	then
 		start_monitoring true true true
@@ -175,6 +184,7 @@ main()
 	mkdir -p ./logs/iostat/
 	mkdir -p ./logs/vdo_stats/
 	mkdir -p ./logs/runs/
+	mkdir -p ./logs/fio-populate/
 	run_all_tests
 	send_logs
 }
