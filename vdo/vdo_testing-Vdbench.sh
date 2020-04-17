@@ -67,6 +67,13 @@ benchmark()
 	# Sistema de benchmarking
 	if [ "$benchmark" = "vdbench" ]
 	then
+		# Populate se for leitura
+		if [ $test_type = 'r' ]
+		then
+			echo "populating with vdbench" >> $log_run
+			input_file="./inputs/vdbench/populate_${dataset}"
+			fio $input_file >> "./logs/vdbench-populate//$run_ID"
+		fi
 		echo "benchmark: starting vdbench" >> $log_run
 		input_file="./inputs/vdbench/${dataset}"_"${access_type}"_"${process_number}"_"${test_type}.ini"
 		~/vdbench/vdbench -f $input_file -o "./logs/vdbench/${run_ID}/"
@@ -171,6 +178,7 @@ main()
 	mkdir -p ./logs/iostat/
 	mkdir -p ./logs/vdo_stats/
 	mkdir -p ./logs/runs/
+	mkdir -p ./logs/vdbench-populate/
 
 	run_all_tests
 	send_logs

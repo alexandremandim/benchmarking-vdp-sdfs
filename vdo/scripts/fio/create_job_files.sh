@@ -102,7 +102,7 @@ main(){
 
     for dataset in dataset1 dataset2
     do
-        input_file="./inputs/fio/populate_${dataset}"
+        input_file="./inputs/fio/populate_${dataset}.ini"
         generate_populate_job
         for test_type in r w
         do

@@ -92,6 +92,32 @@ generate_input_file()
     rd
 }
 
+generate_populate_file()
+{
+    general
+
+    echo "#SD" >> $input_file
+    echo "sd=sd1" >> $input_file 
+    echo "lun=${vdoVolumeName}" >> $input_file
+    echo "size=${size}g" >> $input_file
+    echo "openflags=o_direct" >> $input_file
+    echo "threads=1" >> $input_file
+
+    echo "#WD" >> $input_file
+    echo "wd=wd1" >> $input_file
+    echo "sd=sd1" >> $input_file
+    echo "xfersize=4k" >> $input_file
+
+    echo "rdpct=0" >> $input_file
+    echo "seekpct=sequential" >> $input_file
+
+    echo "#RD" >> $input_file
+    echo "rd=rd1" >> $input_file
+    echo "wd=wd1" >> $input_file
+    echo "iorate=max" >> $input_file
+    echo "maxdata=${size}g" >> $input_file
+}
+
 main(){
     # Voltar a criar a pasta e ficheiro
     mkdir -p ../../inputs/vdbench/
@@ -99,6 +125,8 @@ main(){
 
     for dataset in dataset1 dataset2
     do
+        input_file="../../inputs/vdbench/populate_${dataset}.ini"
+        generate_populate_file
         for test_type in r w
         do
             for access_type in sequencial uniform poisson
