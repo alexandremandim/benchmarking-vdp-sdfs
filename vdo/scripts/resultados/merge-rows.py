@@ -18,7 +18,7 @@ def main():
     
     benchmark = sys.argv[2]
     
-    results = getAverageAndStdDedis(filepath,False)
+    results = getAverageAndStdDedis(filepath,True)
     
     # ----------- CHARTS ---------
     if not os.path.exists(chartFolder):
@@ -70,7 +70,7 @@ def getAverageAndStdDedis(filepath,printCSV):
                 dedisResutls[id] = [benchmark, dataset, test, access, processes, latency, sdL, throughput, sdT, operation, sdO]
                 
                 if(printCSV == True):
-                    print(id,benchmark, dataset, test, access, processes, latency, sdL, throughput, sdT, operation, sdO)
+                    print(id,benchmark, dataset, test, access, processes, str(latency).replace('.', ','), str(sdL).replace('.', ','), str(throughput).replace('.', ','), str(sdT).replace('.', ','), str(operation).replace('.', ','), str(sdO).replace('.', ','))
 
                 latencies = []
                 troughputs = []
@@ -87,7 +87,8 @@ def chart(xValues, yValues, yDP, yLabel, title, imageName):
     error = yDP
 
     fig, ax = plt.subplots()
-    ax.bar(x_pos, CTEs, yerr=error, align='center', alpha=0.5, ecolor='black', capsize=10)
+    ax.bar(x_pos, CTEs, yerr=error, align='center', alpha=0.5, ecolor='black', capsize=0.25)
+    ax.bar(x_pos+0.25, CTEs, yerr=error, align='center', alpha=0.5, ecolor='red', capsize=0.25)
     ax.set_ylabel(yLabel)
     ax.set_xticks(x_pos)
     ax.set_xticklabels(xValues)
@@ -117,6 +118,27 @@ def chart3(workloadResults, title, filename):
     operacoesDP = list(map(lambda id: id[10], workloadResults.values()))
     chart(workloadResults.keys(), operacoes, operacoesDP,
           'IO (GiB)',"IO - " + title, filename + "_operacoes.png")
+
+def chart3Bars(x, y1, y1Label, y1std, y2, y2Label, y2std, y3, y3Label, y3std, title):
+
+    fig, ax = plt.subplots()
+
+    ind = np.arange(len(x))    # the x locations for the groups
+    width = 0.35                # the width of the bars
+    ax.bar(ind, y1, width, bottom=0*cm, yerr=y1std, label=y1Label)
+    ax.bar(ind + width, y2, width, bottom=0*cm, yerr=y2std,label=y2Label)
+    #ax.bar(ind - width, y3, width, bottom=0*cm, yerr=y3std,label=y3Label)
+
+    ax.set_title(title)
+    ax.set_xticks(ind + width / 2)
+    ax.set_xticklabels(x)
+
+    ax.legend()
+    ax.yaxis.set_units(inch)
+    ax.autoscale_view()
+
+    plt.show()
+
 
 def dedisCharts(results, benchmark):
     
