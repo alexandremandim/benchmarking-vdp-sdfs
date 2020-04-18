@@ -18,20 +18,26 @@ def main():
     
     benchmark = sys.argv[2]
     
+    if(benchmark == "DEDIS1"):
+        print("id","benchmark","dataset","test","access","processes","latency","sdL","throughput","sdT","operation","sdO")
+        
     results = getAverageAndStdDedis(filepath,True)
     
     # ----------- CHARTS ---------
     if not os.path.exists(chartFolder):
         os.mkdir(chartFolder)
 
-    if(benchmark == "DEDIS1" or benchmark == "DEDIS2"):
-        dedisCharts(results,benchmark)
-
-    if(benchmark == "FIO"):
-        fioCharts(results,benchmark)
+    # if(benchmark == "DEDIS1"):
+    #     dedisCharts(results,benchmark)
         
-    if(benchmark == "VDBENCH"):
-        vdbenchCharts(results,benchmark)
+    # if( benchmark == "DEDIS2"):
+    #     dedisCharts(results,benchmark)
+
+    # if(benchmark == "FIO"):
+    #     fioCharts(results,benchmark)
+        
+    # if(benchmark == "VDBENCH"):
+    #     vdbenchCharts(results,benchmark)
 
 def getAverageAndStdDedis(filepath,printCSV):
     latencies = []
@@ -43,8 +49,6 @@ def getAverageAndStdDedis(filepath,printCSV):
         line = fp.readline() # First line does not count
         cnt = 1
 
-        if(printCSV == True):
-            print("id","benchmark","dataset","test","access","processes","latency","sdL","throughput","sdT","operation","sdO")
         for line in fp:
             line = line.strip().split("\t")
 

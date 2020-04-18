@@ -10,7 +10,7 @@ dedis1()
 		awk -f ~/repositorios/tese/vdo/scripts/resultados/awk/dedis1.awk $f >> /tmp/awkDEDIS1
 	done
 
-	python3 ~/repositorios/tese/vdo/scripts/resultados/merge-rows.py /tmp/awkDEDIS1 DEDIS1 > dedis1.csv
+	python3 ~/repositorios/tese/vdo/scripts/resultados/merge-rows.py /tmp/awkDEDIS1 DEDIS1 > results.csv
 }
 
 #D2
@@ -23,7 +23,7 @@ dedis2()
 		awk -f ~/repositorios/tese/vdo/scripts/resultados/awk/dedis2.awk $f >> /tmp/awkDEDIS2
 	done
 
-	python3 ~/repositorios/tese/vdo/scripts/resultados/merge-rows.py /tmp/awkDEDIS2 DEDIS2 > dedis2.csv
+	python3 ~/repositorios/tese/vdo/scripts/resultados/merge-rows.py /tmp/awkDEDIS2 DEDIS2 >> results.csv
 }
 
 #FIO
@@ -36,7 +36,7 @@ fio(){
 		awk -f ~/repositorios/tese/vdo/scripts/resultados/awk/fio.awk $f >> /tmp/awkFIO
 	done
 
-	python3 ~/repositorios/tese/vdo/scripts/resultados/merge-rows.py /tmp/awkFIO FIO > fio.csv
+	python3 ~/repositorios/tese/vdo/scripts/resultados/merge-rows.py /tmp/awkFIO FIO >> results.csv
 }
 
 vdbench(){
@@ -49,7 +49,7 @@ vdbench(){
 		echo $GiB >> /tmp/awkVDBENCH
 	done
 
-	python3 ~/repositorios/tese/vdo/scripts/resultados/merge-rows.py /tmp/awkVDBENCH VDBENCH > vdbench.csv
+	python3 ~/repositorios/tese/vdo/scripts/resultados/merge-rows.py /tmp/awkVDBENCH VDBENCH >> results.csv
 }
 
 dedis1

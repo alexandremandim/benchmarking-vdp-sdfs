@@ -72,7 +72,7 @@ benchmark()
 		then
 			echo "populating with vdbench" >> $log_run
 			input_file="./inputs/vdbench/populate_${dataset}"
-			fio $input_file >> "./logs/vdbench-populate//$run_ID"
+			~/vdbench/vdbench -f $input_file -o "./logs/vdbench-populate/${run_ID}/"
 		fi
 		echo "benchmark: starting vdbench" >> $log_run
 		input_file="./inputs/vdbench/${dataset}"_"${access_type}"_"${process_number}"_"${test_type}.ini"
@@ -126,7 +126,7 @@ run_all_tests()
 	do
 		for dataset in dataset1 dataset2
 		do
-			for test_type in r w
+			for test_type in r
 			do
 				for access_type in sequencial uniform poisson
 				do
