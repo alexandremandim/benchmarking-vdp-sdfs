@@ -71,7 +71,7 @@ benchmark()
 		if [ $test_type = 'r' ]
 		then
 			echo "populating with vdbench" >> $log_run
-			input_file="./inputs/vdbench/populate_${dataset}"
+			input_file="./inputs/vdbench/populate_${dataset}.ini"
 			~/vdbench/vdbench -f $input_file -o "./logs/vdbench-populate/${run_ID}/"
 		fi
 		echo "benchmark: starting vdbench" >> $log_run
