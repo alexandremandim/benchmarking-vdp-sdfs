@@ -115,6 +115,7 @@ generate_populate_file()
     echo "rd=rd1" >> $input_file
     echo "wd=wd1" >> $input_file
     echo "iorate=max" >> $input_file
+    echo "elapsed=2h" >> $input_file
     echo "maxdata=${size}g" >> $input_file
 }
 
