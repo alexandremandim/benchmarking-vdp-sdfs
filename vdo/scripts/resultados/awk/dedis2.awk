@@ -13,5 +13,5 @@ NR==1               {
 
     END                 {
                             printf date"\t"hour"\t"benchmark"\t"dataset"\t"test"\t"access"\t"process"\t"iteration"\t" 
-                            print (latency/count)"\t"throughput"\t"((operations*4096)/(1024*1024*1024))
+                            printf (latency/count)"\t"throughput"\t"((operations*4096)/(1024*1024*1024))
                         }

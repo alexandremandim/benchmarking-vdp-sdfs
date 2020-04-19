@@ -126,7 +126,7 @@ run_all_tests()
 	do
 		for dataset in dataset1 dataset2
 		do
-			for test_type in r
+			for test_type in r w
 			do
 				for access_type in sequencial uniform poisson
 				do

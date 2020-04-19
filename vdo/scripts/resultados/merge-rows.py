@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 
 chartFolder = "charts"
 
+# awk '{c++; if(c%4 == 0){ print $0; printf("\n");} else print $0}' aux > aux2
+
 def main():
     
     if(len(sys.argv) < 3):
@@ -19,7 +21,7 @@ def main():
     benchmark = sys.argv[2]
     
     if(benchmark == "DEDIS1"):
-        print("id","benchmark","dataset","test","access","processes","latency","sdL","throughput","sdT","operation","sdO")
+        print("test","access","processes","benchmark","dataset","operation","latency","throughput","logicalBlocksUsed","physicalBlocksUsed","compressedFragments","compressedBlocks")
         
     results = getAverageAndStdDedis(filepath,True)
     
@@ -43,6 +45,10 @@ def getAverageAndStdDedis(filepath,printCSV):
     latencies = []
     troughputs = []
     operations = []
+    logicalBlocksUsed = []
+    physicalBlocksUsed = []
+    compressedFragments = []
+    compressedBlocks = []
     dedisResutls = {}
 
     with open(filepath) as fp:
@@ -55,6 +61,10 @@ def getAverageAndStdDedis(filepath,printCSV):
             latencies.append(float(line[8]))
             troughputs.append(float(line[9]))
             operations.append(float(line[10]))
+            logicalBlocksUsed.append(float(line[11]))
+            physicalBlocksUsed.append(float(line[12]))
+            compressedFragments.append(float(line[13]))
+            compressedBlocks.append(float(line[14]))
             
             if cnt % 4 == 0:
                 benchmark = line[2]
@@ -68,17 +78,30 @@ def getAverageAndStdDedis(filepath,printCSV):
                 sdT = np.std(troughputs, dtype=np.float64)
                 operation = np.average(operations)
                 sdO = np.std(operations, dtype=np.float64)
+                
+                
+                logBlocksUsed = np.average(logicalBlocksUsed)
+                physBlocksUsed = np.average(physicalBlocksUsed)
+                compFragments = np.average(compressedFragments)
+                compBlocks = np.average(compressedBlocks)
 
                 id = benchmark.lower() + "_d" + dataset[-1] + "_" + test + "_" + access[0] + "_" + processes
 
                 dedisResutls[id] = [benchmark, dataset, test, access, processes, latency, sdL, throughput, sdT, operation, sdO]
                 
+                if(access=="zipf" or access=="poisson"):
+                    access="hotspot"
+                
                 if(printCSV == True):
-                    print(id,benchmark, dataset, test, access, processes, str(latency).replace('.', ','), str(sdL).replace('.', ','), str(throughput).replace('.', ','), str(sdT).replace('.', ','), str(operation).replace('.', ','), str(sdO).replace('.', ','))
+                    print(test, access, processes, benchmark, dataset, str(operation).replace('.', ','), str(latency).replace('.', ','), str(throughput).replace('.', ','), str(logBlocksUsed).replace('.', ','), str(physBlocksUsed).replace('.', ','), str(compFragments).replace('.', ','), str(compBlocks).replace('.', ','))
 
                 latencies = []
                 troughputs = []
                 operations = []
+                logicalBlocksUsed = []
+                physicalBlocksUsed = []
+                compressedFragments = []
+                compressedBlocks = []
 
             cnt += 1
     

@@ -13,5 +13,5 @@ NR==1               {
 /io\=[0-9]+(\.[0-9]+)?MiB/              {   split($3,a,"="); split(a[2],b,"M"); operations = (b[1]/1024)    } #Está em GiB
 END                 {
                         printf date"\t"hour"\t"benchmark"\t"dataset"\t"test"\t"access"\t"process"\t"iteration"\t" 
-                        print (latency/count)"\t"throughput"\t"operations
+                        printf (latency/count)"\t"throughput"\t"operations
                     }
