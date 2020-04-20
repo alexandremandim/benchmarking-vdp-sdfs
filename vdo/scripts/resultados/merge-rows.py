@@ -9,6 +9,9 @@ chartFolder = "charts"
 
 def main():
     
+    testeChart()
+    sys.exit()
+    
     if(len(sys.argv) < 3):
         print("More arguments...")
         sys.exit()
@@ -23,23 +26,7 @@ def main():
     if(benchmark == "DEDIS1"):
         print("test","access","processes","benchmark","dataset","operation","latency","throughput","logicalBlocksUsed","physicalBlocksUsed","compressedFragments","compressedBlocks")
         
-    results = getAverageAndStdDedis(filepath,True)
-    
-    # ----------- CHARTS ---------
-    if not os.path.exists(chartFolder):
-        os.mkdir(chartFolder)
-
-    # if(benchmark == "DEDIS1"):
-    #     dedisCharts(results,benchmark)
-        
-    # if( benchmark == "DEDIS2"):
-    #     dedisCharts(results,benchmark)
-
-    # if(benchmark == "FIO"):
-    #     fioCharts(results,benchmark)
-        
-    # if(benchmark == "VDBENCH"):
-    #     vdbenchCharts(results,benchmark)
+    getAverageAndStdDedis(filepath,True)
 
 def getAverageAndStdDedis(filepath,printCSV):
     latencies = []
@@ -49,7 +36,7 @@ def getAverageAndStdDedis(filepath,printCSV):
     physicalBlocksUsed = []
     compressedFragments = []
     compressedBlocks = []
-    dedisResutls = {}
+    dedisResults = {}
 
     with open(filepath) as fp:
         line = fp.readline() # First line does not count
@@ -87,7 +74,7 @@ def getAverageAndStdDedis(filepath,printCSV):
 
                 id = benchmark.lower() + "_d" + dataset[-1] + "_" + test + "_" + access[0] + "_" + processes
 
-                dedisResutls[id] = [benchmark, dataset, test, access, processes, latency, sdL, throughput, sdT, operation, sdO]
+                dedisResults[id] = [benchmark, dataset, test, access, processes, latency, sdL, throughput, sdT, operation, sdO]
                 
                 if(access=="zipf" or access=="poisson"):
                     access="hotspot"
@@ -105,7 +92,7 @@ def getAverageAndStdDedis(filepath,printCSV):
 
             cnt += 1
     
-    return dedisResutls
+    return dedisResults
 
 def chart(xValues, yValues, yDP, yLabel, title, imageName):
 
@@ -152,9 +139,9 @@ def chart3Bars(x, y1, y1Label, y1std, y2, y2Label, y2std, y3, y3Label, y3std, ti
 
     ind = np.arange(len(x))    # the x locations for the groups
     width = 0.35                # the width of the bars
-    ax.bar(ind, y1, width, bottom=0*cm, yerr=y1std, label=y1Label)
-    ax.bar(ind + width, y2, width, bottom=0*cm, yerr=y2std,label=y2Label)
-    #ax.bar(ind - width, y3, width, bottom=0*cm, yerr=y3std,label=y3Label)
+    ax.bar(ind, y1, width, bottom=0, yerr=y1std, label=y1Label)
+    ax.bar(ind + width, y2, width, bottom=0, yerr=y2std,label=y2Label)
+    #ax.bar(ind - width, y3, width, bottom=0, yerr=y3std,label=y3Label)
 
     ax.set_title(title)
     ax.set_xticks(ind + width / 2)
@@ -165,7 +152,6 @@ def chart3Bars(x, y1, y1Label, y1std, y2, y2Label, y2std, y3, y3Label, y3std, ti
     ax.autoscale_view()
 
     plt.show()
-
 
 def dedisCharts(results, benchmark):
     
