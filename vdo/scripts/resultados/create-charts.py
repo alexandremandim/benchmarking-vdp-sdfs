@@ -2,6 +2,7 @@ import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from operator import itemgetter
 
 chartFolder = "charts"
 
@@ -34,6 +35,11 @@ def createIOPSandSavedCharts(dataset, proc, results):
     dedis2 = list(filter(lambda x: x[2] == "dedisbench2", dataset_proc))
     fio = list(filter(lambda x: x[2] == "fio", dataset_proc))
     vdbench = list(filter(lambda x: x[2] == "vdbench", dataset_proc))
+    
+    dedis1 = sorted(dedis1, key=itemgetter(0))
+    dedis2 = sorted(dedis2, key=itemgetter(0))
+    fio = sorted(fio, key=itemgetter(0))
+    vdbench = sorted(vdbench, key=itemgetter(0))
     
     # chart iops
     createChart(dataset+"_"+proc+"_iops","IOPS (4kB/sec) - "+ dataset+ " - "+ proc +" Processo",list(map(lambda y: float(y[4]), dedis1)), list(map(lambda x: float(x[4]), dedis2)), list(map(lambda x: float(x[4]), fio)), list(map(lambda x: float(x[4]), vdbench)))
@@ -93,8 +99,8 @@ def createChart(imagename,title,dedis1IOPS,dedis2IOPS,fioIOPS,vdbenchIOPS):
 
     ax.legend()
     ax.autoscale_view()
-
-    # plt.show()
+    plt.xticks(rotation=15)
+    
     plt.savefig("./"+chartFolder+"/"+imagename)
  
 if __name__ == "__main__":

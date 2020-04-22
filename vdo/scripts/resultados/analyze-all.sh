@@ -94,7 +94,14 @@ vdbench()
 	python3 ~/repositorios/tese/vdo/scripts/resultados/merge-rows.py /tmp/awkVDBENCH VDBENCH >> results.csv
 }
 
+echo "Getting dedis1 results"
 dedis1
+echo "Getting dedis2 results"
 dedis2
+echo "Getting fio results"
 fio
+echo "Getting vdbench results"
 vdbench
+
+echo "Creating charts"
+python3 ~/repositorios/tese/vdo/scripts/resultados/create-charts.py results.csv

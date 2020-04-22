@@ -9,9 +9,6 @@ chartFolder = "charts"
 
 def main():
     
-    testeChart()
-    sys.exit()
-    
     if(len(sys.argv) < 3):
         print("More arguments...")
         sys.exit()
