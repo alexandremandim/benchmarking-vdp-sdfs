@@ -6,7 +6,7 @@ compratio=1.0638
 #SD
 fsd=sd1
 anchor=/mnt/analyzer/teste
-size=5g
+size=60g
 files=1
 openflags=o_direct
 depth=1
@@ -22,6 +22,6 @@ rd=rd1
 fwd=wd1
 fwdrate=max
 format=yes
-fortotal=5g
+fortotal=60g
 elapsed=1200
-maxdata=5g
+maxdata=60g
