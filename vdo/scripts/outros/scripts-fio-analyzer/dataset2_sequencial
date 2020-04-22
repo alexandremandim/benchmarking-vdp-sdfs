@@ -1,0 +1,14 @@
+; -- start job file --
+[global]
+runtime=20m
+filename=/mnt/analyzer/fio
+direct=1
+ioengine=libaio
+blocksize=4k
+iodepth=1
+size=60g
+readwrite=write
+buffer_compress_percentage=74
+dedupe_percentage=61
+[proc]
+; -- end job file --
