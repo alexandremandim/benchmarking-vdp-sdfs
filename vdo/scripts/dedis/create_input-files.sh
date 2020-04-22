@@ -98,6 +98,7 @@ generate_input_file(){
 		touch $input_file
 		echo "[execution]" > $input_file
 		echo "distfile=datasets/dedis2/$dataset" >> $input_file
+		#echo "distfile=datasets/dedis2/fio_${dataset}_sequential.txt" >> $input_file
 		if [ "$access_type" = "sequencial" ] 
 		then
 			echo "access_type=0" >> $input_file
