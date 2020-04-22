@@ -1,12 +1,12 @@
 #General
-dedupratio=1.64
+dedupratio=2.56
 dedupunit=4k
 dedupsets=17%
 compratio=3.846
 #SD
 fsd=sd1
 anchor=/mnt/analyzer/teste
-size=60g
+size=5g
 openflags=o_direct
 depth=1
 files=1
@@ -21,7 +21,7 @@ fileio=sequential
 rd=rd1
 fwd=wd1
 fwdrate=max
-fortotal=60g
+fortotal=5g
 format=yes
 elapsed=1200
-maxdata=60g
+maxdata=5g
