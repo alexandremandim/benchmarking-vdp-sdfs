@@ -74,8 +74,7 @@ generate_input_file(){
 			echo "access_type=2" >> $input_file
 		fi
 		echo "nprocs=$process_number" >> $input_file
-		#COUNT=`expr $filesize / $process_number`
-		echo "filesize=$COUNT" >> $input_file
+		echo "filesize=$filesize" >> $input_file
 		echo "blocksize=$blocksize" >> $input_file
 		if [ "$test_type" = "w" ]
 		then
@@ -110,8 +109,7 @@ generate_input_file(){
 		fi
 		echo "nprocs=$process_number" >> $input_file
 
-		#COUNT=`expr $filesize / $process_number`
-		echo "filesize=$COUNT" >> $input_file
+		echo "filesize=$filesize" >> $input_file
 		echo "blocksize=$blocksize" >> $input_file
 		if [ "$test_type" = "w" ]
 		then
