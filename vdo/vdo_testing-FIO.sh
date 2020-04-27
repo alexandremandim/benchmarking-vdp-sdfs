@@ -81,6 +81,7 @@ benchmark()
 		echo "benchmark: starting fio" >> $log_run
 		input_file="./inputs/fio/${dataset}"_"${access_type}"_"${process_number}"_"${test_type}.ini"
 		fio $input_file >> "./logs/fio/$run_ID"
+		sync && dmsetup message $vdo_volume_name 0 sync-dedupe
 
 	else
 		echo "benchmark: no benchmark started" >> $log_run

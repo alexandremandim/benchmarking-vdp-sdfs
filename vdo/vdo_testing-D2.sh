@@ -73,6 +73,7 @@ benchmark()
 		echo "benchmark: starting dedisbench2" >> $log_run
 		input_file="./inputs/dedisbench2/$dataset"_"$access_type"_"$process_number"_"$test_type"
 		~/dedisbenchv2/DEDISbench -$test_type -p -s60000 -t20 -f$input_file >> "./logs/dedisbench2/$run_ID"
+		sync && dmsetup message $vdo_volume_name 0 sync-dedupe
 	else
 		echo "benchmark: no benchmark started" >> $log_run
 	fi
