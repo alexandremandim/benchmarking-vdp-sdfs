@@ -129,7 +129,7 @@ run_all_tests()
 				do
 					for process_number in 1 4
 					do
-						for run_number in 1 #2 3 4
+						for run_number in 1 2 3 4
 						do
 							single_run
 						done
