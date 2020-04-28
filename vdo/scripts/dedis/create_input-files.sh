@@ -76,6 +76,7 @@ generate_input_file(){
 		echo "nprocs=$process_number" >> $input_file
 		echo "filesize=$filesize" >> $input_file
 		echo "blocksize=$blocksize" >> $input_file
+		echo "sync=1" >> $input_file
 		if [ "$test_type" = "w" ]
 		then
 			echo "populate=0" >> $input_file
@@ -111,6 +112,7 @@ generate_input_file(){
 
 		echo "filesize=$filesize" >> $input_file
 		echo "blocksize=$blocksize" >> $input_file
+		echo "sync=1" >> $input_file
 		if [ "$test_type" = "w" ]
 		then
 			echo "populate=0" >> $input_file
