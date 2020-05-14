@@ -21,7 +21,7 @@ def main():
     benchmark = sys.argv[2]
     
     if(benchmark == "DEDIS1"):
-        print("test","access","processes","benchmark","dataset","operation","latency","throughput","logicalBlocksUsed","physicalBlocksUsed","compressedFragments","compressedBlocks")
+        print("test","access","processes","benchmark","dataset","operation","latency","throughput","logicalBlocksUsed","physicalBlocksUsed","compressedFragments","compressedBlocks","CPU_USR", "CPU_SYS", "CPU_WAIT", "RAM_USED")
         
     getAverageAndStdDedis(filepath,True)
 
@@ -33,6 +33,11 @@ def getAverageAndStdDedis(filepath,printCSV):
     physicalBlocksUsed = []
     compressedFragments = []
     compressedBlocks = []
+    cpu_usr = []
+    cpu_sys = []
+    cpu_wait = []
+    mem_used = []
+    
     dedisResults = {}
 
     with open(filepath) as fp:
@@ -49,6 +54,10 @@ def getAverageAndStdDedis(filepath,printCSV):
             physicalBlocksUsed.append(float(line[12]))
             compressedFragments.append(float(line[13]))
             compressedBlocks.append(float(line[14]))
+            cpu_usr.append(float(line[15])) 
+            cpu_sys.append(float(line[16]))
+            cpu_wait.append(float(line[17]))
+            mem_used.append(float(line[18]))
             
             if cnt % 4 == 0:
                 benchmark = line[2]
@@ -68,7 +77,11 @@ def getAverageAndStdDedis(filepath,printCSV):
                 physBlocksUsed = np.average(physicalBlocksUsed)
                 compFragments = np.average(compressedFragments)
                 compBlocks = np.average(compressedBlocks)
-
+                cpu_usr = np.average(cpu_usr)
+                cpu_sys = np.average(cpu_sys)
+                cpu_wait = np.average(cpu_wait)
+                mem_used = np.average(mem_used)
+                
                 id = benchmark.lower() + "_d" + dataset[-1] + "_" + test + "_" + access[0] + "_" + processes
 
                 dedisResults[id] = [benchmark, dataset, test, access, processes, latency, sdL, throughput, sdT, operation, sdO]
@@ -77,7 +90,7 @@ def getAverageAndStdDedis(filepath,printCSV):
                     access="hotspot"
                 
                 if(printCSV == True):
-                    print(test, access, processes, benchmark, dataset, str(operation).replace('.', ','), str(latency).replace('.', ','), str(throughput).replace('.', ','), str(logBlocksUsed).replace('.', ','), str(physBlocksUsed).replace('.', ','), str(compFragments).replace('.', ','), str(compBlocks).replace('.', ','))
+                    print(test, access, processes, benchmark, dataset, str(operation).replace('.', ','), str(latency).replace('.', ','), str(throughput).replace('.', ','), str(logBlocksUsed).replace('.', ','), str(physBlocksUsed).replace('.', ','), str(compFragments).replace('.', ','), str(compBlocks).replace('.', ','),str(cpu_usr).replace('.',','), str(cpu_sys).replace('.',','), str(cpu_wait).replace('.',','), str(mem_used).replace('.',','))
 
                 latencies = []
                 troughputs = []
@@ -86,136 +99,14 @@ def getAverageAndStdDedis(filepath,printCSV):
                 physicalBlocksUsed = []
                 compressedFragments = []
                 compressedBlocks = []
+                cpu_usr = []
+                cpu_sys = []
+                cpu_wait = []
+                mem_used = []
 
             cnt += 1
     
     return dedisResults
-
-def chart(xValues, yValues, yDP, yLabel, title, imageName):
-
-    x_pos = np.arange(len(xValues))
-    CTEs = yValues
-    error = yDP
-
-    fig, ax = plt.subplots()
-    ax.bar(x_pos, CTEs, yerr=error, align='center', alpha=0.5, ecolor='black', capsize=0.25)
-    ax.bar(x_pos+0.25, CTEs, yerr=error, align='center', alpha=0.5, ecolor='red', capsize=0.25)
-    ax.set_ylabel(yLabel)
-    ax.set_xticks(x_pos)
-    ax.set_xticklabels(xValues)
-    ax.set_title(title)
-    ax.yaxis.grid(True)
-
-    # Save the figure and show
-    plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment='right')
-    plt.tight_layout()
-    plt.savefig("./"+chartFolder+"/"+imageName)
-    plt.close()
-    # plt.show()
-
-def chart3(workloadResults, title, filename):
-    # Debito
-    debito = list(map(lambda id: id[7], workloadResults.values()))
-    debitoDP = list(map(lambda id: id[8], workloadResults.values()))
-    chart(workloadResults.keys(), debito, debitoDP,
-          'IOPS',"IOPS - " + title, filename + "_debito.png")
-    # Latencia
-    latencia = list(map(lambda id: id[5], workloadResults.values()))
-    latenciaDP = list(map(lambda id: id[6], workloadResults.values()))
-    chart(workloadResults.keys(), latencia, latenciaDP,
-          'Latência miliseconds',"Latência - " + title, filename + "_latencia.png")
-    # Operacoes
-    operacoes = list(map(lambda id: id[9], workloadResults.values()))
-    operacoesDP = list(map(lambda id: id[10], workloadResults.values()))
-    chart(workloadResults.keys(), operacoes, operacoesDP,
-          'IO (GiB)',"IO - " + title, filename + "_operacoes.png")
-
-def chart3Bars(x, y1, y1Label, y1std, y2, y2Label, y2std, y3, y3Label, y3std, title):
-
-    fig, ax = plt.subplots()
-
-    ind = np.arange(len(x))    # the x locations for the groups
-    width = 0.35                # the width of the bars
-    ax.bar(ind, y1, width, bottom=0, yerr=y1std, label=y1Label)
-    ax.bar(ind + width, y2, width, bottom=0, yerr=y2std,label=y2Label)
-    #ax.bar(ind - width, y3, width, bottom=0, yerr=y3std,label=y3Label)
-
-    ax.set_title(title)
-    ax.set_xticks(ind + width / 2)
-    ax.set_xticklabels(x)
-
-    ax.legend()
-    ax.yaxis.set_units(inch)
-    ax.autoscale_view()
-
-    plt.show()
-
-def dedisCharts(results, benchmark):
-    
-    writeWL = { key:value for (key,value) in results.items() if value[2] == 'w'}
-    chart3(writeWL, benchmark + " - Write", benchmark.lower() + "_write")
-    
-    readWL = { key:value for (key,value) in results.items() if value[2] == 'r'}
-    chart3(readWL, benchmark + " - Read", benchmark.lower() + "_read")
-    
-    hotWL = { key:value for (key,value) in results.items() if value[3] == 'hotspot'}
-    chart3(hotWL, benchmark + " - Hotspot", benchmark.lower() + "_hotspot")
-    
-    seqWL = { key:value for (key,value) in results.items() if value[3] == 'sequencial'}
-    chart3(seqWL, benchmark + " - Sequencial", benchmark.lower() + "_sequencial")
-    
-    uniformWL = { key:value for (key,value) in results.items() if value[3] == 'uniform'}
-    chart3(uniformWL, benchmark + " - Uniform", benchmark.lower() + "_uniform")
-    
-    oneProc = { key:value for (key,value) in results.items() if value[4] == '1'}
-    chart3(oneProc, benchmark + " - 1Process", benchmark.lower() + "_1proc")
-    
-    fourProc = { key:value for (key,value) in results.items() if value[4] == '4'}
-    chart3(fourProc, benchmark + " - 4Process", benchmark.lower() + "_4proc")
-
-def fioCharts(results, benchmark):
-    writeWL = { key:value for (key,value) in results.items() if value[2] == 'w'}
-    chart3(writeWL, benchmark + " - Write", benchmark.lower() + "_write")
-    
-    readWL = { key:value for (key,value) in results.items() if value[2] == 'r'}
-    chart3(readWL, benchmark + " - Read", benchmark.lower() + "_read")
-    
-    hotWL = { key:value for (key,value) in results.items() if value[3] == 'poisson'}
-    chart3(hotWL, benchmark + " - poisson", benchmark.lower() + "_poisson")
-    
-    seqWL = { key:value for (key,value) in results.items() if value[3] == 'sequencial'}
-    chart3(seqWL, benchmark + " - Sequencial", benchmark.lower() + "_sequencial")
-    
-    uniformWL = { key:value for (key,value) in results.items() if value[3] == 'uniform'}
-    chart3(uniformWL, benchmark + " - Uniform", benchmark.lower() + "_uniform")
-    
-    oneProc = { key:value for (key,value) in results.items() if value[4] == '1'}
-    chart3(oneProc, benchmark + " - 1Process", benchmark.lower() + "_1proc")
-    
-    fourProc = { key:value for (key,value) in results.items() if value[4] == '4'}
-    chart3(fourProc, benchmark + " - 4Process", benchmark.lower() + "_4proc")
-    
-def vdbenchCharts(results, benchmark):
-    writeWL = { key:value for (key,value) in results.items() if value[2] == 'w'}
-    chart3(writeWL, benchmark + " - Write", benchmark.lower() + "_write")
-    
-    readWL = { key:value for (key,value) in results.items() if value[2] == 'r'}
-    chart3(readWL, benchmark + " - Read", benchmark.lower() + "_read")
-    
-    hotWL = { key:value for (key,value) in results.items() if value[3] == 'poisson'}
-    chart3(hotWL, benchmark + " - poisson", benchmark.lower() + "_poisson")
-    
-    seqWL = { key:value for (key,value) in results.items() if value[3] == 'sequencial'}
-    chart3(seqWL, benchmark + " - Sequencial", benchmark.lower() + "_sequencial")
-    
-    uniformWL = { key:value for (key,value) in results.items() if value[3] == 'uniform'}
-    chart3(uniformWL, benchmark + " - Uniform", benchmark.lower() + "_uniform")
-    
-    oneProc = { key:value for (key,value) in results.items() if value[4] == '1'}
-    chart3(oneProc, benchmark + " - 1Process", benchmark.lower() + "_1proc")
-    
-    fourProc = { key:value for (key,value) in results.items() if value[4] == '4'}
-    chart3(fourProc, benchmark + " - 4Process", benchmark.lower() + "_4proc")
     
 if __name__ == "__main__":
     main()

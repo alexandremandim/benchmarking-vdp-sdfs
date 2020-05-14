@@ -1,4 +1,4 @@
-BEGIN               { FS=" "; RS="\n"; throughput = 0; latency = 0; operations = 0; count = 0}
+BEGIN               { FS=" "; RS="\n"; throughput = 0; latency = 0; operations = 0; count = 0;}
 
 NR==1               { 
                         split(FILENAME,b,"\/");
