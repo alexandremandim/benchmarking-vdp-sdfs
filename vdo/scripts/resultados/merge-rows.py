@@ -21,7 +21,7 @@ def main():
     benchmark = sys.argv[2]
     
     if(benchmark == "DEDIS1"):
-        print("test","access","processes","benchmark","dataset","operation","latency","throughput","logicalBlocksUsed","physicalBlocksUsed","compressedFragments","compressedBlocks","CPU_USR", "CPU_SYS", "CPU_WAIT", "RAM_USED")
+        print("test" + "\t" + "access" + "\t" + "processes" + "\t" + "benchmark" + "\t" + "dataset" + "\t" + "operation" + "\t" + "latency" + "\t" + "throughput" + "\t" + "logicalBlocksUsed" + "\t" + "physicalBlocksUsed" + "\t" + "compressedFragments" + "\t" + "compressedBlocks" + "\t" + "CPU_USR" + "\t" +  "CPU_SYS" + "\t" +  "CPU_WAIT" + "\t" +  "RAM_USED")
         
     getAverageAndStdDedis(filepath,True)
 
@@ -77,6 +77,12 @@ def getAverageAndStdDedis(filepath,printCSV):
                 physBlocksUsed = np.average(physicalBlocksUsed)
                 compFragments = np.average(compressedFragments)
                 compBlocks = np.average(compressedBlocks)
+                # desvio padrao cpu e mem
+                cpu_user_dp =np.std(cpu_usr, dtype=np.float64)
+                cpu_sys_dp = np.std(cpu_sys, dtype=np.float64)
+                cpu_wait_dp = np.std(cpu_wait, dtype=np.float64)
+                mem_used_dp = np.std(mem_used, dtype=np.float64)
+                
                 cpu_usr = np.average(cpu_usr)
                 cpu_sys = np.average(cpu_sys)
                 cpu_wait = np.average(cpu_wait)
@@ -90,7 +96,16 @@ def getAverageAndStdDedis(filepath,printCSV):
                     access="hotspot"
                 
                 if(printCSV == True):
-                    print(test, access, processes, benchmark, dataset, str(operation).replace('.', ','), str(latency).replace('.', ','), str(throughput).replace('.', ','), str(logBlocksUsed).replace('.', ','), str(physBlocksUsed).replace('.', ','), str(compFragments).replace('.', ','), str(compBlocks).replace('.', ','),str(cpu_usr).replace('.',','), str(cpu_sys).replace('.',','), str(cpu_wait).replace('.',','), str(mem_used).replace('.',','))
+                    print(test + "\t" + access + "\t" + processes + "\t" + benchmark, end ="")
+                    print("\t" + dataset + "\t" + "{:.0f}".format(operation).replace('.', ',') + "\t", end ="")
+                    print("{:,.3f}".format(latency).replace(',',' ').replace('.', ',') + " ± " + "{:,.3f}".format(sdL).replace('.', ',') + "\t", end ="")
+                    print("{:,.0f}".format(throughput).replace(',',' ').replace('.', ',') + " ± " + "{:,.0f}".format(sdT).replace('.', ',') + "\t", end ="")
+                    print("{:,.0f}".format(logBlocksUsed).replace(',',' ').replace('.', ',') + "\t" + "{:,.0f}".format(physBlocksUsed).replace(',',' ').replace('.', ',') + "\t", end ="")
+                    print("{:,.0f}".format(compFragments).replace(',',' ') + "\t" + "{:.0f}".format(compBlocks).replace(',',' ').replace('.', ',') + "\t", end ="")
+                    print("{:,.1f}".format(cpu_usr).replace('.',',') + " ± " + "{:.1f}".format(cpu_user_dp).replace('.', ',') + "\t", end ="")
+                    print("{:,.1f}".format(cpu_sys).replace(',',' ').replace('.',',') + " ± " + "{:,.1f}".format(cpu_sys_dp).replace('.', ',') + "\t", end ="")
+                    print("{:,.1f}".format(cpu_wait).replace(',',' ').replace('.',',') + " ± " + "{:,.1f}".format(cpu_wait_dp).replace('.', ',') + "\t", end ="")
+                    print("{:,.0f}".format(mem_used).replace(',',' ').replace('.',',') + " ± " + "{:,.0f}".format(mem_used_dp).replace(',',' ').replace('.', ',') )
 
                 latencies = []
                 troughputs = []
