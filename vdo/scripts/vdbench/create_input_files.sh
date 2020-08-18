@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script para criar os job files para o FIO
 
-vdoVolumeName="/dev/mapper/volume-name"
+vdoVolumeName="/mnt/sda6"
 runTime=20 # in minutes
 size=60
 
@@ -26,11 +26,15 @@ general()
 
 sd()
 {
-    echo "#SD" >> $input_file
-    echo "sd=sd1" >> $input_file 
-    echo "lun=${vdoVolumeName}" >> $input_file
-    echo "size=${size}g" >> $input_file
-    echo "openflags=o_direct" >> $input_file
+    echo "#FSD" >> $input_file
+    echo "fsd=sd1" >> $input_file 
+    echo "width=1" >> $input_file 
+    echo "depth=1" >> $input_file 
+    echo "files=1" >> $input_file 
+    echo "anchor=${vdoVolumeName}" >> $input_file
+    echo "sizes=${size}g" >> $input_file
+    echo "totalsize=${size}g" >> $input_file
+    #echo "openflags=o_direct" >> $input_file
 
     if [ "$process_number" = "4"  ]
     then
@@ -43,9 +47,11 @@ sd()
 wd()
 {
     echo "#WD" >> $input_file
-    echo "wd=wd1" >> $input_file
-    echo "sd=sd1" >> $input_file
-    echo "xfersize=4k" >> $input_file
+    echo "fwd=wd1" >> $input_file
+    echo "fsd=sd1" >> $input_file
+    echo "fileio=sequential" >> $input_file
+    echo "xfersizes=4k" >> $input_file
+    echo "threads=1" >> $input_file
 
     # Tipo de teste (Read ou write)
     if [ "$test_type" = "w" ]
@@ -55,29 +61,15 @@ wd()
     then
         echo "rdpct=100" >> $input_file
     fi
-    # Tipo de acesso
-    if [ "$access_type" = "sequencial" ]
-    then
-        echo "seekpct=sequential" >> $input_file
-        if [ "$process_number" = "4"  ]
-        then
-            echo "streams=4" >> $input_file
-        fi
-    elif [ "$access_type" = "uniform" ]
-    then
-        echo "seekpct=random" >> $input_file
-    elif [ "$access_type" = "poisson" ]
-    then
-        echo "seekpct=(poisson,3)" >> $input_file
-    fi
+    
 }
 
 rd()
 {
     echo "#RD" >> $input_file
     echo "rd=rd1" >> $input_file
-    echo "wd=wd1" >> $input_file
-    echo "iorate=max" >> $input_file
+    echo "fwd=wd1" >> $input_file
+    echo "fwdrate=max" >> $input_file
     let timeSec=$runTime*60
     echo "elapsed=${timeSec}" >> $input_file
     echo "maxdata=${size}g" >> $input_file
@@ -127,12 +119,12 @@ main(){
     for dataset in dataset1 dataset2
     do
         input_file="../../inputs/vdbench/populate_${dataset}.ini"
-        generate_populate_file
-        for test_type in r w
+        #generate_populate_file
+        for test_type in w #r w
         do
-            for access_type in sequencial uniform poisson
+            for access_type in sequencial #uniform poisson
             do
-                for process_number in 1 4
+                for process_number in 1 #4
                 do
                     # Nome do ficheiro (baseado no dataset, tipo de acesso, teste e nr processos)
                     file_name="$dataset"_"$access_type"_"$process_number"_"$test_type.ini"
