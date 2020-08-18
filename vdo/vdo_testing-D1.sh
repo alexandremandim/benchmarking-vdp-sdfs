@@ -121,7 +121,7 @@ run_all_tests()
 	
 	for benchmark in dedisbench1
 	do
-		for dataset in dataset1 dataset2
+		for dataset in dataset1 #dataset2
 		do
 			for test_type in w #r
 			do
@@ -154,7 +154,7 @@ single_run()
 	log_run="./logs/runs/log_$run_ID.txt"
 	echo "RUN: $run_ID"
 	
-	initial_state
+	#initial_state
 
 	if [ $run_number = 4 ]
 	then
@@ -166,7 +166,7 @@ single_run()
 
 	benchmark
 	stop_monitoring
-	close_the_door
+	#close_the_door
 }
 
 main()
@@ -177,7 +177,7 @@ main()
 	mkdir -p ./logs/vdo_stats/
 	mkdir -p ./logs/runs/
 	run_all_tests
-	send_logs
+	#send_logs
 }
 
 main
