@@ -2,7 +2,7 @@
 # Script para criar os job files para o FIO
 
 # Variáveis globais
-vdoVolumeName="/dev/mapper/volume-name"
+vdoVolumeName="/mnt/sda6"
 runTime=20
 size=60
 zipf=1.2
@@ -103,12 +103,12 @@ main(){
     for dataset in dataset1 dataset2
     do
         input_file="./inputs/fio/populate_${dataset}.ini"
-        generate_populate_job
+        #generate_populate_job
         for test_type in r w
         do
-            for access_type in sequencial uniform zipf
+            for access_type in sequencial #uniform zipf
             do
-                for process_number in 1 4
+                for process_number in 1 #4
                 do
                     # Nome do ficheiro (baseado no dataset, tipo de acesso, teste e nr processos)
                     file_name="$dataset"_"$access_type"_"$process_number"_"$test_type.ini"
