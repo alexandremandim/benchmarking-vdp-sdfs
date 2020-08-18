@@ -123,13 +123,13 @@ run_all_tests()
 	do
 		for dataset in dataset1 dataset2
 		do
-			for test_type in w r
+			for test_type in w #r
 			do
-				for access_type in sequencial uniform hotspot
+				for access_type in sequencial #uniform hotspot
 				do
-					for process_number in 1 4
+					for process_number in 1 #4
 					do
-						for run_number in 1 2 3 4
+						for run_number in 1 #2 3 4
 						do
 							single_run
 						done

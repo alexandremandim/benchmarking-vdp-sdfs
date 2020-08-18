@@ -30,13 +30,13 @@ log_files_list=""
 
 generate_all_input_files(){
 	# Total de 384 runs
-	for benchmark in dedisbench1 dedisbench2
+	for benchmark in dedisbench1 #dedisbench2
 	do
 		for dataset in dataset1 dataset2
 		do
-			for test_type in r w
+			for test_type in w #r w
 			do
-				for access_type in sequencial uniform hotspot
+				for access_type in sequencial #uniform hotspot
 				do
 					# Fio doesnt have hotpost type of access
 					if [ $access_type = "hotspot" -a $benchmark = "fio" ]
@@ -83,10 +83,10 @@ generate_input_file(){
 		else
 			echo "populate=1" >> $input_file
 		fi
-		echo "rawdevice=/dev/mapper/$vdo_volume_name" >> $input_file
+		#echo "rawdevice=/dev/mapper/$vdo_volume_name" >> $input_file
 
 		echo "[results]" >> $input_file
-		#echo "tempfilespath=/home/alex/Desktop/bug/" >> $input_file
+		echo "tempfilespath=/mnt/sda6/" >> $input_file
 
 		echo "[structural]" >> $input_file		
 		echo "cleantemp=0" >> $input_file
@@ -148,7 +148,7 @@ generate_input_file(){
 
 main(){
 	mkdir -p ./inputs/dedisbench1/
-	mkdir -p ./inputs/dedisbench2/
+	#mkdir -p ./inputs/dedisbench2/
 	generate_all_input_files
 }
 
